@@ -13,9 +13,15 @@ struct lang
 
     wchar_t* vowels;
     size_t vowelsSize;
+
+    wchar_t* syllableStructure;
+    size_t syllableStructureSize;
 };
 
+struct lang* init_lang();
+void free_lang(struct lang*);
 void read_consonants(struct lang* lang);
 void read_vowels(struct lang* lang);
+void read_syllable_structure(struct lang* lang);
 
 #endif

@@ -1,45 +1,77 @@
 #include "lang.h"
 
+struct lang* init_lang()
+{
+    struct lang* lang = malloc(sizeof(struct lang));
+    lang->consonants = NULL;
+    lang->consonantsSize = 0;
+    return lang;
+}
+
+void free_lang(struct lang* lang)
+{
+    free(lang->consonants);
+    free(lang->vowels);
+    free(lang->syllableStructure);
+    free(lang);
+}
+
 void read_consonants(struct lang* lang)
 {
-    wchar_t consonants[315];
+    wchar_t consonant;
     wprintf(L"Enter the consonants: ");
-    fgetws(consonants, sizeof(consonants)/sizeof(consonants[0]), stdin);
 
-    size_t len = wcslen(consonants);
-    if (len > 0 && consonants[len - 1] == L'\n') {
-        consonants[len - 1] = L'\0';
+    while((consonant = getwchar()) != L'\n' && consonant != WEOF)
+    {
+        lang->consonants = (wchar_t*)realloc(lang->consonants, (lang->consonantsSize + 1) * sizeof(wchar_t));
+
+        if (lang->consonants == NULL) 
+        {
+            wprintf(L"error reading consonants.\n");
+            exit(1);
+        }
+
+        lang->consonants[lang->consonantsSize] = consonant;
+        lang->consonantsSize += 1;
     }
-
-    lang->consonantsSize = wcslen(consonants) + 1;
-    lang->consonants = (wchar_t*)malloc(lang->consonantsSize * sizeof(wchar_t));
-    
-    if (lang->consonants == NULL) {
-        wprintf(L"error reading consonants.\n");
-        exit(1);
-    }
-
-    wcscpy(lang->consonants, consonants);
 }
 
 void read_vowels(struct lang* lang)
 {
-    wchar_t vowels[56];
+    wchar_t vowel;
     wprintf(L"Enter the vowels: ");
-    fgetws(vowels, sizeof(vowels)/sizeof(vowels[0]), stdin);
 
-    size_t len = wcslen(vowels);
-    if (len > 0 && vowels[len - 1] == L'\n') {
-        vowels[len - 1] = L'\0';
+    while((vowel = getwchar()) != L'\n' && vowel != WEOF)
+    {
+        lang->vowels = (wchar_t*)realloc(lang->vowels, (lang->vowelsSize + 1) * sizeof(wchar_t));
+
+        if (lang->vowels == NULL) 
+        {
+            wprintf(L"error reading vowels.\n");
+            exit(1);
+        }
+
+        lang->vowels[lang->consonantsSize] = vowel;
+        lang->vowelsSize += 1;
     }
+}
 
-    lang->vowelsSize = wcslen(vowels) + 1;
-    lang->vowels = (wchar_t*)malloc(lang->vowelsSize * sizeof(wchar_t));
-    
-    if (lang->vowels == NULL) {
-        wprintf(L"error reading vowels.\n");
-        exit(1);
+void read_syllable_structure(struct lang* lang)
+{
+    wchar_t letter;
+    wprintf(L"Enter the syllable structure(c/C, v/V) *capitals are optional: ");
+
+    while((letter = getwchar()) != L'\n' && letter != WEOF)
+    {
+        lang->syllableStructure = (wchar_t*)realloc(lang->syllableStructure, (lang->syllableStructureSize + 1) * sizeof(wchar_t));
+
+        if (lang->syllableStructure == NULL) 
+        {
+            wprintf(L"error reading syllable structure.\n");
+            exit(1);
+        }
+
+        lang->syllableStructure[lang->syllableStructureSize] = letter;
+        lang->syllableStructureSize += 1;
     }
-
-    wcscpy(lang->vowels, vowels);
 }
