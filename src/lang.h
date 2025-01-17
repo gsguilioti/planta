@@ -10,8 +10,12 @@ struct lang
 {
     wchar_t* consonants;
     size_t consonantsSize;
+
+    wchar_t* vowels;
+    size_t vowelsSize;
 };
 
 void read_consonants(struct lang* lang);
+void read_vowels(struct lang* lang);
 
 #endif

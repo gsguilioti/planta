@@ -10,6 +10,9 @@ int main()
     struct lang* lang = (struct lang*)malloc(sizeof(struct lang));
 
     read_consonants(lang);
-    wprintf(L"Consonants entered: %ls\n", lang->consonants);
+    wprintf(L"Consonants entered: %ls\n\n", lang->consonants);
+
+    read_vowels(lang);
+    wprintf(L"Vowels entered: %ls\n\n", lang->vowels);
     return 0;
 }
