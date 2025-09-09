@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::Read;
 
 mod generator;
+mod word;
 use crate::generator::Generator;
 
 fn main() -> std::io::Result<()>
@@ -11,6 +12,8 @@ fn main() -> std::io::Result<()>
     lang_file.read_to_string(&mut lang_contents)?;
     
     let generator = Generator::new();
+
+    generator.gen_words();
 
     Ok(())
 }

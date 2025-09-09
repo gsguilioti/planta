@@ -1,9 +1,11 @@
+use crate::word::Word;
+
 pub struct Generator
 {
-    num_syllable: u8,
-    separator: char,
-    consonants: Vec<char>,
-    vowels: Vec<char>,
+    pub num_syllable: u8,
+    pub separator: char,
+    pub consonants: Vec<char>,
+    pub vowels: Vec<char>,
 }
 
 impl Generator
@@ -36,4 +38,15 @@ impl Generator
             ],
         }
     }
+
+    pub fn gen_words(&self)
+    {
+
+        for _i in 1..10
+        {
+            let word = Word::new(self); 
+            println!("{word}");
+        }
+    }
+
 }
