@@ -3,6 +3,7 @@ use crate::word::Word;
 pub struct Generator
 {
     pub num_syllable: u8,
+    pub structure: Vec<char>,
     pub separator: char,
     pub consonants: Vec<char>,
     pub vowels: Vec<char>,
@@ -14,7 +15,8 @@ impl Generator
     {
         Generator
         {
-            num_syllable: 0,
+            num_syllable: 3,
+            structure: vec!['C', 'V', 'C'],
             separator: '.',
             consonants: vec![
                 'p','b','t','d','ʈ','ɖ','c','ɟ','k','ɡ','q','ɢ','ʡ','ʔ',

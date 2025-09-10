@@ -3,6 +3,7 @@ use std::io::Read;
 
 mod generator;
 mod word;
+mod syllable;
 use crate::generator::Generator;
 
 fn main() -> std::io::Result<()>

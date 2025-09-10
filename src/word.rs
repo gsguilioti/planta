@@ -1,36 +1,36 @@
-use rand::Rng;
 use std::fmt::*;
 use std::fmt;
 
 use crate::generator::Generator;
+use crate::syllable::Syllable;
 
 pub struct Word
 {
-    pub letters: Vec<char>,
+    pub word_string: String,
+    pub syllables: Vec<Syllable>,
 }
 
 impl Word
 {
     pub fn new(generator: &Generator) -> Self
     {
-        let word_size = rand::rng().random_range(2..=10);
-        let mut _letters: Vec<char> = Vec::new();
+        let mut _syllables: Vec<Syllable> = Vec::new();
         
-        for _num in 0..word_size
+        for _num in 0..generator.num_syllable
         {
-            let letter_type = rand::rng().random_range(1..=2);
-            let consonant = rand::rng().random_range(0..=generator.consonants.len()-1);
-            let vowel = rand::rng().random_range(0..=generator.vowels.len()-1);
-
-            if letter_type == 1 
-            { _letters.push(generator.consonants[consonant]); }
-            else
-            { _letters.push(generator.vowels[vowel]); }
+            _syllables.push(Syllable::new(generator));
         }
 
+        let stringfy: String =  _syllables
+                                .iter()
+                                .map(|syl| syl.letters.iter().collect::<String>())
+                                .collect::<Vec<_>>()
+                                .join(&generator.separator.to_string());
+        
         Word
         {
-            letters: _letters,
+            word_string: stringfy,
+            syllables: _syllables,
         }
     }
 }
@@ -39,7 +39,6 @@ impl fmt::Display for Word
 {
     fn fmt(&self, f:&mut Formatter) -> fmt::Result
     {
-        let s: String = self.letters.iter().collect();
-        write!(f, "{}", s)
+        write!(f, "{}", self.word_string)
     }
 }
