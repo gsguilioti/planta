@@ -1,9 +1,9 @@
 [syllable_structure]
-CVC
+CVc
 
 [sounds]
-c: p/dʒ/m
-v: a/e
+c: p/b/t/d/k/g/m/n/r/f/v/s/z/l/h
+v: a/e/i/o/u/y/w
 
 [rules]
 o: 2(l)b+(v/f/t/k)

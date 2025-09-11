@@ -56,7 +56,7 @@ impl Parser
 
         Generator
         {
-            num_syllable: 3,
+            num_syllable: 0,
             structure: _structure,
             separator: '.',
             consonants: _consonants,

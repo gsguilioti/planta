@@ -47,7 +47,7 @@ impl Generator
         for _i in 1..10
         {
             let word = Word::new(self); 
-            println!("{word}");
+            println!("{0} > {1}", word.word_string, word.sep_string);
         }
     }
 }
