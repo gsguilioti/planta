@@ -50,5 +50,4 @@ impl Generator
             println!("{word}");
         }
     }
-
 }
