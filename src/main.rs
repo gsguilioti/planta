@@ -5,6 +5,7 @@ mod generator;
 mod word;
 mod syllable;
 mod parser;
+mod rule;
 use crate::parser::Parser;
 
 fn main() -> std::io::Result<()>
@@ -17,6 +18,6 @@ fn main() -> std::io::Result<()>
     let generator = parser.parse();
 
     generator.gen_words();
-
+        
     Ok(())
 }

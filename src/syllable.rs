@@ -1,6 +1,7 @@
 use rand::Rng;
 
 use crate::generator::Generator;
+use crate::rule::Rule;
 
 pub struct Syllable
 {
@@ -48,6 +49,9 @@ impl Syllable
             }
         }
 
-        Self { letters: _letters}
+        Self 
+        { 
+            letters: _letters,
+        }
     }
 }

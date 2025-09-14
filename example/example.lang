@@ -6,9 +6,8 @@ c: p/b/t/d/k/g/m/n/r/f/v/s/z/l/h
 v: a/e/i/o/u/y/w
 
 [rules]
-o: 2(l)b+(v/f/t/k)
-o: 1(b)a+(r/y/w)
-o: 1(h)a+(y/w)
-n: (V/D/y/w)
+o: +(v/f/t/k)b(l)2
+o: +(r/y/w)a(b)1
+o: +(y/w)a(h)1
 c: -(y/w)
 c: ls-(v/p/b/d/g)

@@ -1,4 +1,5 @@
 use crate::word::Word;
+use crate::rule::Rule;
 
 pub struct Generator
 {
@@ -7,6 +8,7 @@ pub struct Generator
     pub separator: char,
     pub consonants: Vec<char>,
     pub vowels: Vec<char>,
+    pub rules: Vec<Rule>,
 }
 
 impl Generator
@@ -38,6 +40,7 @@ impl Generator
                 'æ', 'ɐ',
                 'a', 'ɶ', 'ɑ', 'ɒ',
             ],
+            rules: Vec::new(),
         }
     }
 
