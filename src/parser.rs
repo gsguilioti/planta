@@ -117,7 +117,7 @@ impl Parser
             let mut place: Place;
             let mut pos: u8 = 0;
             let mut act: Action;
-            let mut func: Func;
+            let mut func: Func = Func::NONE;
             let mut syl: Syl = Syl::ANY;
 
             self.skip += 1;
@@ -149,7 +149,7 @@ impl Parser
             {act = Action::FORBID {letters: Vec::new()};}
             else {break;}
 
-            let end = line.find(')').unwrap();
+            let mut end = line.find(')').unwrap();
             let line_aux = &line[1..end];
 
             match &mut act 
@@ -163,30 +163,40 @@ impl Parser
             }
 
             line = &line[end+1..];
-           
-            if line.chars().nth(0) == Some('a')
-            {func = Func::AFTER {letters: Vec::new()};}
-            else if line.chars().nth(0) == Some('b')
-            {func = Func::BEFORE {letters: Vec::new()};}
-            else {break;}
 
-            let end = line.find(')').unwrap();
-            let line_aux = &line[1..end];
-
-            match &mut func 
+            if let Some(c) = line.chars().nth(0)
             {
-                Func::AFTER { letters} | Func::BEFORE { letters } =>
+                if c.is_alphabetic()
                 {
-                    *letters = line_aux.split('/')
-                        .filter_map(|s| s.chars().next())
-                        .collect();
-                }
-            }
+                    if c == 'a'
+                    {func = Func::AFTER {letters: Vec::new()};}
+                    else if c == 'b'
+                    {func = Func::BEFORE {letters: Vec::new()};}
+                    else {break;}
 
-            if end+1 > line.len()
-            {break;}
-            else
-            {pos = line.chars().nth(end+1).unwrap() as u8;}
+                    end = line.find(')').unwrap();
+                    let line_aux = &line[1..end];
+
+                    match &mut func 
+                    {
+                        Func::AFTER { letters} | Func::BEFORE { letters } =>
+                        {
+                            *letters = line_aux.split('/')
+                                .filter_map(|s| s.chars().next())
+                                .collect();
+                        },
+                        _ => ()
+                    }
+
+                }
+            }           
+         
+            if let Some(c) = line.chars().nth(end+1)
+            {
+                if c.is_ascii_digit()
+                { pos = c as u8; }
+            }
+            println!("end: {0}, len: {1}, line: {2}", end, line.len(), line);
 
             let rule = Rule
                 {

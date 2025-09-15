@@ -16,6 +16,7 @@ pub enum Func
 {
     AFTER{letters: Vec<char>},
     BEFORE{letters: Vec<char>},
+    NONE,
 }
 
 pub enum Syl
