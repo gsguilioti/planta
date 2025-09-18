@@ -1,5 +1,5 @@
 
-
+#[derive(PartialEq)]
 pub enum Place
 {
     ONSET,
@@ -46,6 +46,17 @@ impl Rule
             act: Action::ALLOW{letters: Vec::<char>::new()},
             func: Func::AFTER{letters: Vec::<char>::new()},
             syl: Syl::ANY,
+        }
+    }
+
+    pub fn allow(&self, letter: char, place: &Place) -> bool
+    {
+        if &self.place != place { return true; }
+        
+        match &self.act
+        {
+            Action::ALLOW {letters} => letters.contains(&letter),
+            Action::FORBID {letters} => !letters.contains(&letter),
         }
     }
 }

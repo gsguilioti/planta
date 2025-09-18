@@ -114,7 +114,7 @@ impl Parser
 
         for line in self.content.lines().skip((self.line + 1).into())
         {
-            let mut place: Place;
+            let place: Place;
             let mut pos: u8 = 0;
             let mut act: Action;
             let mut func: Func = Func::NONE;
@@ -150,7 +150,7 @@ impl Parser
             else {break;}
 
             let mut end = line.find(')').unwrap();
-            let line_aux = &line[1..end];
+            let line_aux = &line[2..end];
 
             match &mut act 
             {
@@ -196,7 +196,6 @@ impl Parser
                 if c.is_ascii_digit()
                 { pos = c as u8; }
             }
-            println!("end: {0}, len: {1}, line: {2}", end, line.len(), line);
 
             let rule = Rule
                 {
