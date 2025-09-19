@@ -53,6 +53,7 @@ impl Rule
 
     pub fn allow(&self, letter: char, place: &Place, last_letter: char, syl: &Syl) -> bool
     {
+        if letter == last_letter { return false; }
         if &self.place != place { return true; }
         if &self.syl != syl { return true; }
         
