@@ -4,6 +4,7 @@ use rand::Rng;
 
 use crate::generator::Generator;
 use crate::syllable::Syllable;
+use crate::rule::Syl;
 
 pub struct Word
 {
@@ -25,7 +26,10 @@ impl Word
 
         for _num in 0..max_syl
         {
-            _syllables.push(Syllable::new(generator));
+            _syllables.push(Syllable::new(generator, 
+                if _num == 0 {&Syl::FIRST}
+                else if _num == max_syl-1 {&Syl::LAST}
+                else {&Syl::ANY}));
         }
 
         let sep_stringfy: String =  _syllables

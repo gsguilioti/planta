@@ -10,7 +10,7 @@ pub struct Syllable
 
 impl Syllable
 {
-    pub fn new(generator: &Generator) -> Self
+    pub fn new(generator: &Generator, syl: &Syl) -> Self
     {
         let mut processing_at = Place::ONSET;
         let mut _letters: Vec<char> = Vec::new();
@@ -21,7 +21,7 @@ impl Syllable
             match *l
             {
                 'C' => {
-                    _letters.push(Self::gen_consonant(generator, &processing_at, &mut last_letter));
+                    _letters.push(Self::gen_consonant(generator, &processing_at, &mut last_letter, syl));
                     
                 }
                 'V' => {
@@ -33,7 +33,7 @@ impl Syllable
                 'c' => {
                     if rand::rng().random_bool(0.5)
                     {
-                        _letters.push(Self::gen_consonant(generator, &processing_at, &mut last_letter));
+                        _letters.push(Self::gen_consonant(generator, &processing_at, &mut last_letter, syl));
                     }
                 }
                 'v' => {
@@ -55,14 +55,14 @@ impl Syllable
         }
     }
 
-    fn gen_consonant(generator: &Generator, place: &Place, last_letter: &mut char) -> char
+    fn gen_consonant(generator: &Generator, place: &Place, last_letter: &mut char, syl: &Syl) -> char
     {
         loop
         {
             let letter = generator.consonants[rand::rng()
                 .random_range(0..=generator.consonants.len()-1)];
             
-            if generator.rules.iter().all(|rule| rule.allow(letter, place, *last_letter, &Syl::ANY))
+            if generator.rules.iter().all(|rule| rule.allow(letter, place, *last_letter, syl))
             { 
                 *last_letter = letter;
                 return letter; 

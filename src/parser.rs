@@ -128,7 +128,6 @@ impl Parser
             else {break;}
 
             line = &line[2..].trim();
-
             if let Some(c) = line.chars().nth(0)
             {
                 if c.is_alphabetic()

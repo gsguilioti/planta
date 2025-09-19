@@ -1,17 +1,19 @@
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub enum Place
 {
     ONSET,
     CODA,
 }
 
+#[derive(Debug)]
 pub enum Action
 {
     ALLOW{letters: Vec<char>},
     FORBID{letters: Vec<char>},
 }
 
+#[derive(Debug)]
 pub enum Func
 {
     AFTER{letters: Vec<char>},
@@ -19,6 +21,7 @@ pub enum Func
     NONE,
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub enum Syl
 {
     FIRST,
@@ -26,6 +29,7 @@ pub enum Syl
     ANY,
 }
 
+#[derive(Debug)]
 pub struct Rule
 {
     pub place: Place,
@@ -50,6 +54,7 @@ impl Rule
     pub fn allow(&self, letter: char, place: &Place, last_letter: char, syl: &Syl) -> bool
     {
         if &self.place != place { return true; }
+        if &self.syl != syl { return true; }
         
         match &self.act
         {
@@ -77,7 +82,8 @@ impl Rule
                 }
                 ;
             }
-            Action::FORBID {letters} => !letters.contains(&letter),
+            Action::FORBID {letters} => {
+                !letters.contains(&letter)}
         }
     }
 }
