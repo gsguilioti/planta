@@ -1,7 +1,7 @@
 use rand::Rng;
 
 use crate::generator::Generator;
-use crate::rule::Place;
+use crate::rule::{Place, Syl};
 
 pub struct Syllable
 {
@@ -14,12 +14,14 @@ impl Syllable
     {
         let mut processing_at = Place::ONSET;
         let mut _letters: Vec<char> = Vec::new();
+        let mut last_letter: char = ' ';
+
         for l in &generator.structure
         {
             match *l
             {
                 'C' => {
-                    _letters.push(Self::gen_consonant(generator, &processing_at));
+                    _letters.push(Self::gen_consonant(generator, &processing_at, &mut last_letter));
                     
                 }
                 'V' => {
@@ -31,7 +33,7 @@ impl Syllable
                 'c' => {
                     if rand::rng().random_bool(0.5)
                     {
-                        _letters.push(Self::gen_consonant(generator, &processing_at));
+                        _letters.push(Self::gen_consonant(generator, &processing_at, &mut last_letter));
                     }
                 }
                 'v' => {
@@ -53,22 +55,18 @@ impl Syllable
         }
     }
 
-    fn gen_consonant(generator: &Generator, place: &Place) -> char
+    fn gen_consonant(generator: &Generator, place: &Place, last_letter: &mut char) -> char
     {
-        while true
+        loop
         {
-            let mut letter = generator.consonants[rand::rng()
+            let letter = generator.consonants[rand::rng()
                 .random_range(0..=generator.consonants.len()-1)];
             
-            if generator.rules.iter().all(|rule| rule.allow(letter, place))
-            { return letter; }
+            if generator.rules.iter().all(|rule| rule.allow(letter, place, *last_letter, &Syl::ANY))
+            { 
+                *last_letter = letter;
+                return letter; 
+            }
         }
-
-        ' '
-    }
-
-    fn constains_letter(generator: &Generator, letter: char) -> bool
-    {
-        return true;
     }
 }

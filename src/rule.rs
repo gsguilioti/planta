@@ -29,7 +29,6 @@ pub enum Syl
 pub struct Rule
 {
     pub place: Place,
-    pub pos: u8,
     pub act: Action,
     pub func: Func,
     pub syl: Syl,
@@ -37,25 +36,47 @@ pub struct Rule
 
 impl Rule
 {
-    pub fn new(rule: &String) -> Rule
+    pub fn new() -> Rule
     {
         Self
         {
             place: Place::ONSET,
-            pos: 0,
             act: Action::ALLOW{letters: Vec::<char>::new()},
             func: Func::AFTER{letters: Vec::<char>::new()},
             syl: Syl::ANY,
         }
     }
 
-    pub fn allow(&self, letter: char, place: &Place) -> bool
+    pub fn allow(&self, letter: char, place: &Place, last_letter: char, syl: &Syl) -> bool
     {
         if &self.place != place { return true; }
         
         match &self.act
         {
-            Action::ALLOW {letters} => letters.contains(&letter),
+            Action::ALLOW {letters} => 
+            {
+                match &self.func
+                {
+                    Func::BEFORE {letters: fletters} => 
+                    {
+                        if  fletters.contains(&letter) &&
+                            !letters.contains(&last_letter)
+                        {return false;}
+
+                        return true;
+                    },
+                    Func::AFTER {letters: fletters} => 
+                    {
+                        if  letters.contains(&letter) &&
+                            !fletters.contains(&last_letter)
+                        {return false;}
+
+                        return true;
+                    },
+                    Func::NONE => return true,
+                }
+                ;
+            }
             Action::FORBID {letters} => !letters.contains(&letter),
         }
     }
