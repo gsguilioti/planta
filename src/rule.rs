@@ -55,7 +55,7 @@ impl Rule
     {
         if letter == last_letter { return false; }
         if &self.place != place { return true; }
-        if &self.syl != syl { return true; }
+        if self.syl != Syl::ANY && &self.syl != syl { return true; }
         
         match &self.act
         {
@@ -65,6 +65,9 @@ impl Rule
                 {
                     Func::BEFORE {letters: fletters} => 
                     {
+                        if  letters.contains(&letter) &&
+                            fletters.is_empty() { return true; }
+                        
                         if  fletters.contains(&letter) &&
                             !letters.contains(&last_letter)
                         {return false;}
@@ -74,17 +77,45 @@ impl Rule
                     Func::AFTER {letters: fletters} => 
                     {
                         if  letters.contains(&letter) &&
+                            fletters.is_empty() { return false; }
+                        
+                        if  letters.contains(&letter) &&
                             !fletters.contains(&last_letter)
+                        {return false;}
+                        return true;
+                    },
+                    Func::NONE => return true,
+                };
+            }
+            Action::FORBID {letters} => 
+            {
+                match &self.func
+                {
+                    Func::BEFORE {letters: fletters} => 
+                    {
+                        if  letters.contains(&last_letter) &&
+                            fletters.is_empty() { return false; }
+                     
+                        if  fletters.contains(&letter) &&
+                            letters.contains(&last_letter)
                         {return false;}
 
                         return true;
                     },
-                    Func::NONE => return true,
-                }
-                ;
+                    Func::AFTER {letters: fletters} => 
+                    {
+                        if  letters.contains(&letter) &&
+                            fletters.is_empty() { return false; }
+                        
+                        if  letters.contains(&letter) &&
+                            fletters.contains(&last_letter)
+                        {return false;}
+
+                        return true;
+                    },
+                    Func::NONE => return !letters.contains(&letter),
+                };
             }
-            Action::FORBID {letters} => {
-                !letters.contains(&letter)}
         }
     }
 }
