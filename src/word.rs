@@ -18,11 +18,19 @@ impl Word
     pub fn new(generator: &Generator) -> Self
     {
         let mut _syllables: Vec<Syllable> = Vec::new();
-       
-        let max_syl =   if generator.num_syllable > 0 
+        let mut max_syl: u8 = 0;
+
+        if generator.random_syl_num
+        {
+            max_syl =   if generator.num_syllable > 0 
                         { rand::rng().random_range(1..=generator.num_syllable) }
                         else
                         { rand::rng().random_range(1..= 3) };
+        }
+        else
+        {
+            max_syl = generator.num_syllable;
+        }
 
         for _num in 0..max_syl
         {

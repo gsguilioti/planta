@@ -20,7 +20,6 @@ fn main() -> std::io::Result<()>
     let mut parser = Parser::new(&lang_contents);
     let generator = parser.parse();
 
-    println!("{0}", generator.rules.len());
     generator.gen_words();
         
     Ok(())

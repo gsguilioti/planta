@@ -26,6 +26,7 @@ impl Parser
         let mut _consonants: Vec<char> = vec![];
         let mut _vowels: Vec<char> = vec![];
         let mut _rules: Vec<Rule> = vec![];
+        let mut random_syl: bool = false;
 
         let lines: Vec<String> = self.content.lines().map(|s| s.to_string()).collect();
 
@@ -43,6 +44,10 @@ impl Parser
 
             match line.as_str()
             {
+                "[generator]" =>
+                {
+                    random_syl = self.parse_configs();
+                }
                 "[syllable_structure]" => 
                 {
                     _structure = self.parse_structure();
@@ -58,7 +63,8 @@ impl Parser
 
         Generator
         {
-            num_syllable: 0,
+            random_syl_num:  random_syl,
+            num_syllable: 3,
             structure: _structure,
             separator: '.',
             consonants: _consonants,
@@ -200,5 +206,22 @@ impl Parser
         }
 
         _rules
+    }
+
+    fn parse_configs(&mut self) -> bool
+    {
+        for line in self.content.lines().skip((self.line + 1).into())
+        {
+            self.skip += 1;
+
+            let mut line = line.trim();
+
+            if line == "random_syl_num"
+            { return true; }
+            else
+            { return false; }
+        }
+
+        false
     }
 }

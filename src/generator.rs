@@ -3,6 +3,7 @@ use crate::rule::Rule;
 
 pub struct Generator
 {
+    pub random_syl_num: bool,
     pub num_syllable: u8,
     pub structure: Vec<char>,
     pub separator: char,
@@ -17,6 +18,7 @@ impl Generator
     {
         Generator
         {
+            random_syl_num: true,
             num_syllable: 3,
             structure: vec!['C', 'V', 'C'],
             separator: '.',
