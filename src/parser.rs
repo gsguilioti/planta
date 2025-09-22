@@ -1,6 +1,15 @@
 use crate::generator::Generator;
 use crate::rule::*;
 
+#[derive(Default)]
+pub struct Config
+{
+    pub random_syl_num: bool,
+    pub num_syllable: u8,
+    pub separator: char,
+    pub num_words: u16,
+}
+
 pub struct Parser
 {
     pub content: String,
@@ -26,7 +35,7 @@ impl Parser
         let mut _consonants: Vec<char> = vec![];
         let mut _vowels: Vec<char> = vec![];
         let mut _rules: Vec<Rule> = vec![];
-        let mut random_syl: bool = false;
+        let mut config: Config = Config::default();
 
         let lines: Vec<String> = self.content.lines().map(|s| s.to_string()).collect();
 
@@ -46,7 +55,7 @@ impl Parser
             {
                 "[generator]" =>
                 {
-                    random_syl = self.parse_configs();
+                    config = self.parse_configs();
                 }
                 "[syllable_structure]" => 
                 {
@@ -63,10 +72,11 @@ impl Parser
 
         Generator
         {
-            random_syl_num:  random_syl,
-            num_syllable: 3,
+            num_syllable: config.num_syllable,
+            random_syl_num: config.random_syl_num,
+            num_words: config.num_words,
+            separator: config.separator,
             structure: _structure,
-            separator: '.',
             consonants: _consonants,
             vowels: _vowels,
             rules: _rules,
@@ -208,8 +218,14 @@ impl Parser
         _rules
     }
 
-    fn parse_configs(&mut self) -> bool
+    fn parse_configs(&mut self) -> Config
     {
+        let mut _random_syl_num: bool = false;
+        let mut _num_syllable: u8 = 0;
+        let mut _separator: char = '.';
+        let mut _num_words: u16 = 10;
+
+
         for line in self.content.lines().skip((self.line + 1).into())
         {
             self.skip += 1;
@@ -217,11 +233,31 @@ impl Parser
             let mut line = line.trim();
 
             if line == "random_syl_num"
-            { return true; }
+            { 
+                _random_syl_num = true; 
+            }
+            else if line.starts_with("num_syllable")
+            {
+                _num_syllable = line.split_whitespace().nth(1).unwrap().parse::<u8>().unwrap();
+            }
+            else if line.starts_with("num_words")
+            {
+                _num_words = line.split_whitespace().nth(1).unwrap().parse::<u16>().unwrap();
+            }
+            else if line.starts_with("separator")
+            {
+                _separator = line.split_whitespace().nth(1).unwrap().parse::<char>().unwrap();
+            }
             else
-            { return false; }
+            { break; }
         }
 
-        false
+        Config
+        {
+            random_syl_num: _random_syl_num,
+            num_syllable: _num_syllable,
+            separator: _separator,
+            num_words: _num_words,
+        }
     }
 }

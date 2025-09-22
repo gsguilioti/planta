@@ -3,6 +3,7 @@ use crate::rule::Rule;
 
 pub struct Generator
 {
+    pub num_words: u16,
     pub random_syl_num: bool,
     pub num_syllable: u8,
     pub structure: Vec<char>,
@@ -18,6 +19,7 @@ impl Generator
     {
         Generator
         {
+            num_words: 10,
             random_syl_num: true,
             num_syllable: 3,
             structure: vec!['C', 'V', 'C'],
@@ -49,7 +51,7 @@ impl Generator
     pub fn gen_words(&self)
     {
 
-        for _i in 1..10
+        for _i in 1..self.num_words
         {
             let word = Word::new(self); 
             println!("{0} > {1}", word.word_string, word.sep_string);

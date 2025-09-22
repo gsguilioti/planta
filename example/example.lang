@@ -1,5 +1,8 @@
 [generator]
 random_syl_num
+num_syllable 3
+separator .
+num_words 10
 
 [syllable_structure]
 ccVc
