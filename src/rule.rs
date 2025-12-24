@@ -24,6 +24,7 @@ pub enum Func
 #[derive(PartialEq, Eq, Debug)]
 pub enum Syl
 {
+    MONO,
     FIRST,
     LAST,
     ANY,
@@ -55,7 +56,7 @@ impl Rule
     {
         if letter == last_letter { return false; }
         if &self.place != place { return true; }
-        if self.syl != Syl::ANY && &self.syl != syl { return true; }
+        if self.syl != Syl::ANY && *syl != Syl::MONO && &self.syl != syl { return true; }
         
         match &self.act
         {

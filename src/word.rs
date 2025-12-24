@@ -35,7 +35,7 @@ impl Word
         for _num in 0..max_syl
         {
             _syllables.push(Syllable::new(generator, 
-                if _num == 0 {&Syl::FIRST}
+                if _num == 0 {if max_syl == 1 {&Syl::MONO} else {&Syl::FIRST}}
                 else if _num == max_syl-1 {&Syl::LAST}
                 else {&Syl::ANY}));
         }
